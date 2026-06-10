@@ -1,4 +1,8 @@
 from fastapi import FastAPI
+from app.database import engine, Base
+from app.models import log_event
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Log Anomaly Detector",
