@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.database import engine, Base
 from app.models import log_event
-from app.api import logs
+from app.api import logs, anomaly
 
 Base.metadata.create_all(bind=engine)
 
@@ -12,6 +12,7 @@ app = FastAPI(
 )
 
 app.include_router(logs.router)
+app.include_router(anomaly.router)
 
 @app.get("/")
 def root():
