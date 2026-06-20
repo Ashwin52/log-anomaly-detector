@@ -56,8 +56,14 @@ def score_logs(db: Session) -> dict:
     db.commit()
 
     anomalies = features[features["is_anomaly"] == 1]
+    anomaly_records = anomalies[["service_name", "minute", "error_rate", "anomaly_score"]].to_dict(orient="records")
+
+    from app.services.alert_engine import create_alerts_from_anomalies
+    if anomaly_records:
+        create_alerts_from_anomalies(db, anomaly_records)
+
     return {
         "scored": len(features),
         "anomalies_found": len(anomalies),
-        "anomalies": anomalies[["service_name", "minute", "error_rate", "anomaly_score"]].to_dict(orient="records")
+        "anomalies": anomaly_records
     }

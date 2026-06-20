@@ -4,6 +4,8 @@ from app.database import engine, Base, SessionLocal
 from app.models import log_event
 from app.api import logs, anomaly
 from app.services.anomaly_detector import score_logs, load_model
+from app.models import log_event, alert
+from app.api import logs, anomaly, alerts
 
 Base.metadata.create_all(bind=engine)
 
@@ -15,6 +17,7 @@ app = FastAPI(
 
 app.include_router(logs.router)
 app.include_router(anomaly.router)
+app.include_router(alerts.router)
 
 scheduler = BackgroundScheduler()
 
