@@ -1,11 +1,10 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.background import BackgroundScheduler
 from app.database import engine, Base, SessionLocal
-from app.models import log_event
-from app.api import logs, anomaly
-from app.services.anomaly_detector import score_logs, load_model
 from app.models import log_event, alert
 from app.api import logs, anomaly, alerts
+from app.services.anomaly_detector import score_logs, load_model
 
 Base.metadata.create_all(bind=engine)
 
@@ -13,6 +12,14 @@ app = FastAPI(
     title="Log Anomaly Detector",
     description="Real-time log ingestion and anomaly detection API",
     version="0.1.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(logs.router)
