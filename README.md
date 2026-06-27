@@ -29,11 +29,28 @@ Log files → Parser → PostgreSQL → Isolation Forest (ML) → Alert Engine �
 
 **Backend:** FastAPI, PostgreSQL, SQLAlchemy, scikit-learn, APScheduler
 **Frontend:** React, Vite, Tailwind CSS, Recharts, Axios
-**Infra:** Slack Webhooks, pytest
+**Infra:** Docker, Docker Compose, Slack Webhooks, pytest
 
 ## Setup
 
-### Backend
+### Option 1 — Docker (recommended)
+
+The entire stack — PostgreSQL, backend, and frontend — runs with a single command.
+
+```bash
+git clone https://github.com/Ashwin52/log-anomaly-detector.git
+cd log-anomaly-detector
+cp .env.example .env   # add your own Slack webhook URL (optional)
+docker compose up --build
+```
+
+- Backend: http://localhost:8000
+- Frontend: http://localhost:5173
+- API docs: http://localhost:8000/docs
+
+### Option 2 — Manual setup
+
+#### Backend
 ```bash
 cd backend
 python3 -m venv venv
@@ -42,7 +59,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-### Frontend
+#### Frontend
 ```bash
 cd frontend
 npm install
@@ -50,12 +67,15 @@ npm run dev
 ```
 
 ### Generate demo data
+
 ```bash
 python3 scripts/generate_logs.py
 curl -X POST "http://127.0.0.1:8000/logs/ingest-file?filepath=../data/sample.log"
 curl -X POST "http://127.0.0.1:8000/anomaly/train"
 curl -X POST "http://127.0.0.1:8000/anomaly/score"
 ```
+
+If running via Docker, use `/app/data/sample.log` as the filepath instead.
 
 ## API endpoints
 
