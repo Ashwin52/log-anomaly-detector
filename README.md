@@ -28,7 +28,9 @@ Log files → Parser → PostgreSQL → Isolation Forest (ML) → Alert Engine �
 ## Tech stack
 
 **Backend:** FastAPI, PostgreSQL, SQLAlchemy, scikit-learn, APScheduler
+
 **Frontend:** React, Vite, Tailwind CSS, Recharts, Axios
+
 **Infra:** Docker, Docker Compose, Slack Webhooks, pytest
 
 ## Setup
